@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Minesweeper</title>
+    <link rel="stylesheet" href="main/style.css" />
+  </head>
+  <body>
+    <body onload="onInIt()">
+      <h1>Minesweeper</h1>
+      <div class="timer-container">
+        <span class="timer">0.000</span>
+      </div>
+      <table border="1">
+        <tbody class="board"></tbody>
+      </table>
+      <div class="level-btns-container">
+        <button class="level-btn" onclick="onChangeLevel(4)">Eazy (16)</button>
+        <button class="level-btn" onclick="onChangeLevel(5)">Hard (25)</button>
+        <button class="level-btn" onclick="onChangeLevel(6)">Extreme (36)</button>
+      </div>
+  
+      <div class="victory-container hide">
+        <h1>You Won!</h1>
+        <button class="restart-btn" onclick="onRestartGame()">
+          Click to Restart
+        </button>
+      </div>
+
+    <!-- <script src="js/Utilities.js"></script> -->
+    <script src="js/game.js"></script>
+  </body>
+</html>

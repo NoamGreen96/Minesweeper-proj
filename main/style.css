@@ -1,0 +1,26 @@
+body {
+  text-align: center;
+  background-color: black;
+  color: wheat;
+}
+
+.table {
+  color: white;
+}
+
+.hide {
+  display: none;
+}
+
+td {
+  height: 20px;
+  width: 20px;
+  background-color: #c0c0c0;
+  border: 1.5px solid;
+  border-top-color: #ffffff;
+  border-right-color: #7b7b7b;
+  border-bottom-color: #7b7b7b;
+  border-left-color: #ffffff;
+  text-align: center;
+  vertical-align: middle;
+}
