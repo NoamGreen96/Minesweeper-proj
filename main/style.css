@@ -1,11 +1,14 @@
 body {
   text-align: center;
-  background-color: black;
+  background-color: rgb(89, 62, 62);
   color: wheat;
 }
 
-.table {
+table {
   color: white;
+  margin: auto;
+  width: 250px;
+  height: 250px;
 }
 
 .hide {
@@ -23,4 +26,31 @@ td {
   border-left-color: #ffffff;
   text-align: center;
   vertical-align: middle;
+}
+
+footer {
+  text-align: center;
+  padding: 10px;
+  color: white;
+  font-size: 10px;
+}
+
+.restart-btn {
+  margin: 10px;
+}
+
+.level-btn {
+  margin: 10px;
+  margin-top: 20px;
+}
+button.smiley {
+  font-size: 25px;
+}
+
+.lives {
+  font-size: 20px;
+  padding: 30px;
+}
+button.smiley {
+  font-size: 25px;
 }
