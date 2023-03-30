@@ -10,34 +10,33 @@
   <body>
     <body onload="onInIt()">
     <h1>Mine Sweeper Game</h1>
-    <h2>Play and have fun :D</h2>
+    <h2>Play and have fun 😎</h2>
     <h2 class="msg"></h2>
 
     <div class="overall-container">
     <div class="game-controls">
-      <!-- <div class="top-bar"> -->
-    <button class="restart-btn" onclick="onRestartGame()">😁</button>
+    <button class="smiley" onclick="onRestartGame()">😁</button>
   </div>
   <div class="lives"></div>
+  <div class="timer">00:00</div>
 
 </div>
 </div>
-    <table border="1">
+    <table border="5">
       <tbody class="board"></tbody>
     </table>
     <div class="level-btns-container">
-      <button class="level-btn" onclick="onChangeLevel(4)">Eazy (16)</button>
-      <button class="level-btn" onclick="onChangeLevel(8)">Medium (64)</button>
-      <button class="level-btn" onclick="onChangeLevel(12)">Hard (144)</button>
+      <button class="level-btn" onclick="onChangeLevel(4,2)">Eazy (16)</button>
+      <button class="level-btn" onclick="onChangeLevel(8,12)">Medium (64)</button>
+      <button class="level-btn" onclick="onChangeLevel(12,30)">Hard (144)</button>
     </div>
-    
-    
     <footer>
       <p>Creator: Noam Green</p>
       <p><a href="mailto:noamgr11@gmail.com">noamgr11@gmail.com</a></p>
     </footer>
 
     <script src="js/Utilities.js"></script>
+    <script src="js/timer.js"></script>
     <script src="js/game.js"></script>
   </body>
 </html>

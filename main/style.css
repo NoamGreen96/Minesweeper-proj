@@ -11,10 +11,6 @@ table {
   height: 250px;
 }
 
-.hide {
-  display: none;
-}
-
 td {
   height: 20px;
   width: 20px;
@@ -31,26 +27,33 @@ td {
 footer {
   text-align: center;
   padding: 10px;
-  color: white;
-  font-size: 10px;
+  color: rgb(0, 0, 0);
+  font-size: 20px;
 }
-
-.restart-btn {
-  margin: 10px;
+footer :hover {
+  color: #7b7b7b;
 }
 
 .level-btn {
-  margin: 10px;
-  margin-top: 20px;
-}
-button.smiley {
-  font-size: 25px;
+  background-color: #909d91;
+  border: 10px;
+  color: rgba(0, 0, 0, 0.933);
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
 }
 
 .lives {
   font-size: 20px;
-  padding: 30px;
+  padding: 15px;
 }
 button.smiley {
   font-size: 25px;
+}
+
+.timer {
+  padding-bottom: 20px;
 }

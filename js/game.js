@@ -18,7 +18,8 @@ var gLevel = {
 
 function onInIt() {
   resetAllVars();
-  // resetMsg();
+  resetTimer();
+  resetMsg();
   gBoard = buildBoard();
   renderBoard(gBoard, '.board');
   renderLives();
@@ -26,6 +27,7 @@ function onInIt() {
 
 function startGame() {
   gGame.isOn = true;
+  startTimer();
   addRandMines(gLevel.MINES);
   updateMinesAroundCounts(gBoard);
   revealCells(gActionLocationStack[gActionLocationStack.length - 1]);
@@ -34,12 +36,16 @@ function startGame() {
 function endGame(isWinner) {
   gGame.isOn = false;
   gGame.isOver = true;
+  stopTimer();
   var elmsg = document.querySelector('.msg');
+  var elSmiley = document.querySelector('.smiley');
 
   if (isWinner) {
     elmsg.innerHTML = 'You Are a Winner!';
+    elSmiley.innerHTML = '🥇';
   } else {
     elmsg.innerHTML = 'GAME OVER!';
+    elSmiley.innerHTML = '😓';
   }
 }
 
@@ -135,13 +141,18 @@ function updateMinesAroundCounts(board) {
 function onCellClicked(elCell, i, j) {
   var cell = gBoard[i][j];
   if (cell.isMarked || cell.isShown || gGame.isOver) return;
-
   gActionLocationStack.push({ i, j, isRightClick: false });
   if (gGame.isOn === false) return startGame();
+
   if (cell.isMine) {
     gGame.lives--;
     renderLives();
-    alert('Game over');
+    var elSmiley = document.querySelector('.smiley');
+    elSmiley.innerHTML = '🥲';
+    setTimeout(() => {
+      elSmiley.innerHTML = '😁';
+    }, '1500');
+    alert('You got Bombed 🧨');
     if (gGame.lives === 0) {
       revealMines();
       endGame(false);
@@ -149,6 +160,7 @@ function onCellClicked(elCell, i, j) {
   }
   revealCells({ i, j });
 }
+
 function revealMines() {
   for (var location of gMineLocations) {
     gBoard[location.i][location.j].isShown = true;
@@ -163,7 +175,7 @@ function revealCells(location) {
   renderCell(location);
   gGame.shownCount++;
   checkIfGameOver();
-  //
+  // Expand nighbours
   if (currCell.minesAroundCount === 0 && !currCell.isMine) {
     for (var i = location.i - 1; i <= location.i + 1; i++) {
       if (i < 0 || i >= gBoard.length) continue;
@@ -208,8 +220,10 @@ function renderCell(location, value) {
   elCell.innerHTML = elCellContent;
 }
 
-function onChangeLevel(level) {
+function onChangeLevel(level, dificulty) {
   gLevel.SIZE = level;
+  gLevel.MINES = dificulty;
+
   onInIt();
 }
 
@@ -232,6 +246,7 @@ function markCell(event, i, j) {
   if (cell.isShown || gGame.isOver) return;
 
   gActionLocationStack.push({ i, j, isRightClick: true });
+  startTimer();
   if (!cell.isMarked) {
     cell.isMarked = true;
     gGame.markedCount++;
