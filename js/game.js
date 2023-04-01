@@ -8,8 +8,6 @@ var gMineLocations;
 const MINE = '💣';
 const FLAG = '🚩';
 const LIVE = '🧡';
-const SAD_FACE = '😭';
-const HAPPY_FACE = '😃';
 
 var gLevel = {
   SIZE: 4,
@@ -29,7 +27,7 @@ function startGame() {
   gGame.isOn = true;
   startTimer();
   addRandMines(gLevel.MINES);
-  updateMinesAroundCounts(gBoard);
+  setMinesNegsCount(gBoard);
   revealCells(gActionLocationStack[gActionLocationStack.length - 1]);
 }
 
@@ -42,10 +40,10 @@ function endGame(isWinner) {
 
   if (isWinner) {
     elmsg.innerHTML = 'You Are a Winner!';
-    elSmiley.innerHTML = '🥇';
+    elSmiley.innerHTML = '😎';
   } else {
     elmsg.innerHTML = 'GAME OVER!';
-    elSmiley.innerHTML = '😓';
+    elSmiley.innerHTML = '🤯';
   }
 }
 
@@ -106,7 +104,6 @@ function addRandMines(numOfMines) {
   var randEmprtCellLocations = shuffle(getEmptyCellLocations(gBoard));
   for (var i = 0; i < numOfMines; i++) {
     var currLocation = randEmprtCellLocations.pop();
-    // console.log(currLocation);
     gMineLocations.push(currLocation);
     gBoard[currLocation.i][currLocation.j].isMine = true;
   }
@@ -121,14 +118,13 @@ function getEmptyCellLocations(board) {
       var range = Math.sqrt(
         (firstRevealLocation.i - i) ** 2 + (firstRevealLocation.j - j) ** 2
       );
-      // console.log(range);
       if (range > Math.SQRT2) emptyCellLocations.push({ i, j });
     }
   }
   return emptyCellLocations;
 }
 
-function updateMinesAroundCounts(board) {
+function setMinesNegsCount(board) {
   for (var i = 0; i < board.length; i++) {
     for (var j = 0; j < board[i].length; j++) {
       var currCell = board[i][j];
@@ -143,7 +139,13 @@ function onCellClicked(elCell, i, j) {
   if (cell.isMarked || cell.isShown || gGame.isOver) return;
   gActionLocationStack.push({ i, j, isRightClick: false });
   if (gGame.isOn === false) return startGame();
-
+  // if (
+  //   gGame.markedCount === gLevel.MINES &&
+  //   gLevel.SIZE ** 2 - gLevel.MINES === gGame.shownCount + gLevel.MINES - 2
+  // ) {
+  //   endGame(true);
+  // }
+  checkIfGameOver();
   if (cell.isMine) {
     gGame.lives--;
     renderLives();
@@ -174,8 +176,14 @@ function revealCells(location) {
   currCell.isShown = true;
   renderCell(location);
   gGame.shownCount++;
+
   checkIfGameOver();
-  // Expand nighbours
+
+  ExpandShown(location);
+}
+
+function ExpandShown(location) {
+  var currCell = gBoard[location.i][location.j];
   if (currCell.minesAroundCount === 0 && !currCell.isMine) {
     for (var i = location.i - 1; i <= location.i + 1; i++) {
       if (i < 0 || i >= gBoard.length) continue;
@@ -193,11 +201,16 @@ function checkIfGameOver() {
   livesLost - gGame.lives;
   var totalSafecells = gLevel.SIZE ** 2 - gLevel.MINES + livesLost;
   if (
-    gGame.shownCount === totalSafecells &&
-    gGame.markedCount + livesLost === gLevel.MINES
+    gGame.markedCount === gLevel.MINES &&
+    gLevel.SIZE ** 2 - gLevel.MINES === gGame.shownCount + gLevel.MINES - 2
   ) {
     endGame(true);
   }
+  if (
+    gGame.shownCount === totalSafecells &&
+    gGame.markedCount + livesLost === gLevel.MINES
+  )
+    endGame(true);
 }
 
 function renderCell(location, value) {
@@ -220,9 +233,9 @@ function renderCell(location, value) {
   elCell.innerHTML = elCellContent;
 }
 
-function onChangeLevel(level, dificulty) {
+function onChangeLevel(level, minesCount) {
   gLevel.SIZE = level;
-  gLevel.MINES = dificulty;
+  gLevel.MINES = minesCount;
 
   onInIt();
 }
@@ -237,16 +250,19 @@ function countMinesAround(location, board) {
       if (board[i][j].isMine) minesAroundCount++;
     }
   }
+
   return minesAroundCount;
 }
 
-function markCell(event, i, j) {
-  event.preventDefault();
+function markCell(ev, i, j) {
+  ev.preventDefault();
   var cell = gBoard[i][j];
+
   if (cell.isShown || gGame.isOver) return;
 
   gActionLocationStack.push({ i, j, isRightClick: true });
   startTimer();
+
   if (!cell.isMarked) {
     cell.isMarked = true;
     gGame.markedCount++;
@@ -255,7 +271,7 @@ function markCell(event, i, j) {
     gGame.markedCount--;
   }
   renderCell({ i, j });
-  checkIfGameOver;
+  checkIfGameOver();
 }
 function onRestartGame() {
   onInIt();
@@ -265,4 +281,8 @@ function renderLives() {
   var elLives = document.querySelector('.lives');
   var livesStr = LIVE.repeat(gGame.lives);
   elLives.innerHTML = livesStr;
+}
+function darkMode() {
+  var element = document.body;
+  element.classList.toggle('dark-mode');
 }
