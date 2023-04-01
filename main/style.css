@@ -1,6 +1,6 @@
 body {
   text-align: center;
-  background-image: url(/pictures/backGround.jpg);
+  background-image: url('../pictures/backGround.jpg');
   color: rgba(171, 179, 182, 0.983);
   background-size: cover;
 }
